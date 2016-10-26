@@ -17,10 +17,10 @@
 		// $mysqli = getDB();
 		$mysqli->query("INSERT INTO works (title, image, artist, culture, date_display, date, comments, section)
 						VALUES ('$title', '$image', '$artist', '$culture', '$date_display', $date, '$comments', '$section')") or die($mysqli->error);
-		echo "Got here at least";
+		echo "Done!";
 
 	} else {
-		echo "Something went wrong";
+		echo "Form not submitted!";
 	}
 
 ?>

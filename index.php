@@ -41,11 +41,14 @@
 		});
 
 		for ($i = 0; $i < count($sections); $i++) {
-			$section = $sections[$i]["name"];
-			$section_comments = $section["comments"];
-			$section_date = $section["date"];
+			$row = $sections[$i];
+			$section = $row["name"];
+			$section_comments = $row["comments"];
+			$section_date = $row["date"];
+			$modal_id = 'modal' . $i;
+			$carousel_id = 'carousel' . $i;
 
-			$works = $mysqli->query("SELECT * FROM works WHERE section=$section")->fetch_all(MYSQLI_ASSOC);
+			$works = $mysqli->query("SELECT * FROM works WHERE section='$section'")->fetch_all(MYSQLI_ASSOC);
 			usort($works, function($a, $b) {
 				return $a["date"] - $b["date"];
 			});
@@ -60,7 +63,7 @@
 				<div class="cd-timeline-content">
 					<h2><?php echo $section; ?></h2>
 					<p><?php echo $section_comments; ?></p>
-					<a href="#0" class="cd-read-more" data-toggle='modal' data-target='#myModal'>See works</a>
+					<a href="#0" class="cd-read-more" data-toggle='modal' <?php echo "data-target='$modal_id'"?>>See works</a>
 					<span class="cd-date"><?php echo $section_date; ?></span>
 				</div> <!-- cd-timeline-content -->
 			</div> <!-- cd-timeline-block -->
@@ -68,7 +71,7 @@
 		</section> <!-- cd-timeline -->
 
 		<!-- modals  -->
-		<div id="myModal" class="modal fade" role="dialog">
+		<div class="modal fade" role="dialog" <?php echo "id=$modal_id"; ?>>
 			<div class="modal-dialog modal-lg">
 			    <!-- Modal content-->
 			    <div class="modal-content">
@@ -85,11 +88,12 @@
 								$comments = $work["comments"];
 								$image = $work["image"];
 								$image = "'$image'";
+								$active = $j == 0 ? 'active' : '';
 							?>
 					        <!-- Wrapper for slides -->
 					        <div class="carousel-inner" role="listbox">
-					            <div class="item">
-					                <img src=<?php echo $image;?>>
+					            <div <?php echo "class='item $active'"?>>
+					                <img src=<?php echo $image?>>
 					                <div class="carousel-caption">
 					                    <h3><?php echo $title; ?></h3>
 					                    <h6><?php echo $artist; ?></h6>
@@ -103,18 +107,19 @@
 					    	}
 					    	?>
 					        <!-- Left and right controls -->
-					        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+					        <a class="left carousel-control" role="button" data-slide="prev" <?php echo "href='#"."$carousel_id'";?>>
 					            <span class="fa fa-angle-left" aria-hidden="true"></span>
 					            <span class="sr-only">Previous</span>
 					        </a>
-					        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+					        <a class="right carousel-control" role="button" data-slide="next" <?php echo "href='#"."$carousel_id'";?>>
 					            <span class="fa fa-angle-right" aria-hidden="true"></span>
 					            <span class="sr-only">Next</span>
 					        </a>
 					        <ol class="carousel-indicators">
 					        	<?php
 					    		for ($j = 0; $j < count($works); $j++) {
-					            	echo "<li data-target='#myCarousel' data-slide-to='$j'></li>";
+					    			$active = $j == 0 ? 'active' : '';
+					            	echo "<li data-target='#myCarousel' data-slide-to='$j' class='$active'></li>";
 					        	}
 					        	?>
 					        </ol>
