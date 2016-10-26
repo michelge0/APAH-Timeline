@@ -96,7 +96,7 @@
 						        
 						            <div <?php echo "class='item $active'"?>>
 						            	<div style="width: 800px; height: 600px; overflow: hidden">
-						                	<img src=<?php echo $image?>>
+						                	<img style="width: auto; heigh: auto; max-width: 800px; max-height: 600px;" src=<?php echo $image?>>
 						                </div>
 						                <div class="carousel-caption">
 						                    <h3><?php echo $title; ?></h3>
