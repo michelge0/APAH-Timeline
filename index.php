@@ -1,7 +1,5 @@
 <?php
-	
 	require("db_manager.php");
-
 ?>
 
 <html lang="en" class="no-js">
@@ -11,7 +9,7 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script src="js/main.js"></script> <!-- Resource jQuery -->
 
-	<!-- Latest compiled and minified CSS -->
+	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
 	<!-- Optional theme -->
@@ -19,7 +17,7 @@
 
 	<link rel="stylesheet" href="css/carousel-style.css">
 
-	<!-- Latest compiled and minified JavaScript -->
+	<!-- Bootstrap JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 	<link href='http://fonts.googleapis.com/css?family=Droid+Serif|Open+Sans:400,700' rel='stylesheet' type='text/css'>
@@ -63,8 +61,11 @@
 				<div class="cd-timeline-content">
 					<h2><?php echo $section; ?></h2>
 					<p><?php echo $section_comments; ?></p>
-					<a href="#0" class="cd-read-more" data-toggle='modal' <?php echo "data-target='$modal_id'"?>>See works</a>
-					<span class="cd-date"><?php echo $section_date; ?></span>
+					<a href="#0" class="cd-read-more" data-toggle='modal' <?php echo "data-target='#$modal_id'"?>>See works</a>
+					<span class="cd-date"> <?php
+						echo $section_date >= 0 ? number_format($section_date) . " CE" : number_format(-$section_date) . " BCE";
+					?>
+					</span>
 				</div> <!-- cd-timeline-content -->
 			</div> <!-- cd-timeline-block -->
 
@@ -76,36 +77,39 @@
 			    <!-- Modal content-->
 			    <div class="modal-content">
 				    <div class="modal-body">
-				    	<div id="myCarousel" class="carousel slide" data-ride="carousel">
-				    		<?php 
-					    		for ($j = 0; $j < count($works); $j++) {
-
-								$work = $works[$j];
-								$title = $work["title"];
-								$artist = $work["artist"];
-								$culture = $work["culture"];
-								$date_display = $work["date_display"];
-								$comments = $work["comments"];
-								$image = $work["image"];
-								$image = "'$image'";
-								$active = $j == 0 ? 'active' : '';
-							?>
-					        <!-- Wrapper for slides -->
+				    	<div class="carousel slide" data-ride="carousel" <?php echo "id='$carousel_id'";?>>
+				    		<!-- Wrapper for slides -->
 					        <div class="carousel-inner" role="listbox">
-					            <div <?php echo "class='item $active'"?>>
-					                <img src=<?php echo $image?>>
-					                <div class="carousel-caption">
-					                    <h3><?php echo $title; ?></h3>
-					                    <h6><?php echo $artist; ?></h6>
-					                    <h6><?php echo $culture; ?></h6>
-					                    <h6><?php echo $date_display; ?></h6>
-					                    <p><?php echo $comments; ?></p>
-					                </div>
-					            </div>
+					    		<?php 
+						    		for ($j = 0; $j < count($works); $j++) {
+
+									$work = $works[$j];
+									$title = $work["title"];
+									$artist = $work["artist"];
+									$culture = $work["culture"];
+									$date_display = $work["date_display"];
+									$comments = $work["comments"];
+									$image = $work["image"];
+									$image = "'$image'";
+									$active = $j == 0 ? 'active' : '';
+								?>
+						        
+						            <div <?php echo "class='item $active'"?>>
+						            	<div style="width: 800px; height: 600px; overflow: hidden">
+						                	<img src=<?php echo $image?>>
+						                </div>
+						                <div class="carousel-caption">
+						                    <h3><?php echo $title; ?></h3>
+						                    <h6><?php echo $artist; ?></h6>
+						                    <h6><?php echo $culture; ?></h6>
+						                    <h6><?php echo $date_display; ?></h6>
+						                    <p><?php echo $comments; ?></p>
+						                </div>
+						            </div>
+						        <?php // end works loop
+						    	}
+						    	?>
 					        </div>
-					        <?php // end works loop
-					    	}
-					    	?>
 					        <!-- Left and right controls -->
 					        <a class="left carousel-control" role="button" data-slide="prev" <?php echo "href='#"."$carousel_id'";?>>
 					            <span class="fa fa-angle-left" aria-hidden="true"></span>
@@ -119,7 +123,7 @@
 					        	<?php
 					    		for ($j = 0; $j < count($works); $j++) {
 					    			$active = $j == 0 ? 'active' : '';
-					            	echo "<li data-target='#myCarousel' data-slide-to='$j' class='$active'></li>";
+					            	echo "<li data-target='#$carousel_id' data-slide-to='$j' class='$active'></li>";
 					        	}
 					        	?>
 					        </ol>
