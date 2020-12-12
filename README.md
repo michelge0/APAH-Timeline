@@ -1,2 +1,2 @@
 # APAH-Timeline
-Timeline for AP Art History, because f Prezi.
+Timeline for AP Art History.
